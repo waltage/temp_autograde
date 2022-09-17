@@ -55,6 +55,7 @@ def main():
     log_init(logging.WARNING)
 
   anubis_adapter = configure_anubis(ARGS)
+
   git_adapter = configure_git(ARGS)
 
   # init git... send status
@@ -69,6 +70,8 @@ def main():
 
   # init pipeline, fill and run
   pipeline = configure_pipeline(ARGS)
+  # bad dependency injection, need to fix later
+  pipeline.pipeline_conf.anubis_adapter = anubis_adapter
 
   pipeline.add_test(Case01())
   pipeline.add_test(Case01())
