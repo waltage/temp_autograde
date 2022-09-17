@@ -58,11 +58,12 @@ def main():
   git_adapter = configure_git(ARGS)
 
   # init git... send status
-  try:
-    git_adapter.clone_student_repo()
-  except git.exc.GitCommandError as ge:
-    # this automatically exits
-    anubis_adapter.panic("could not clone and/or checkout repository", )
+  if ARGS.prod:
+    try:
+      git_adapter.clone_student_repo()
+    except git.exc.GitCommandError as ge:
+      # this automatically exits
+      anubis_adapter.panic("could not clone and/or checkout repository", )
 
   os.chdir(ARGS.path)
 
