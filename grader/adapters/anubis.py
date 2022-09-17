@@ -15,7 +15,10 @@ class AnubisAdapter:
     self.conf = conf
 
   def report_state(self, state: str, params=None):
-    body = dict(token=self.conf.token, commit=self.conf.commit, state=state)
+    body = dict(
+      token=self.conf.token,
+      commit=self.conf.commit,
+      state=state)
     self.conf.logger.debug("report_state: {}".format(body))
     self.__send(
       "/pipeline/report/state/{}".format(self.conf.submission_id),
@@ -24,10 +27,29 @@ class AnubisAdapter:
     )
 
   def report_build_result(self, message: str, status: bool):
-    pass
+    body = dict(
+      token=self.conf.token,
+      commit=self.conf.commit,
+      stdout=message,
+      passed=status)
+    self.conf.logger.debug("report_build: {}".format(body))
+    self.__send(
+      "/pipeline/report/build/{}".format(self.conf.submission_id),
+      body)
 
   def report_test_result(self, name: str, otype: str, message: str, status: bool):
-    pass
+    body = dict(
+      token=self.conf.token,
+      commit=self.conf.commit,
+      test_name=name,
+      output_type=otype,
+      message=message,
+      passed=status
+    )
+    self.conf.logger.debug("report_test_results: {}".format(body))
+    self.__send(
+      "/pipeline/report/test/{}".format(self.conf.submission_id),
+      body)
 
   def panic(self, msg: str, trace: str = None):
     """Panic sends a panic to anubis and EXITS program."""
