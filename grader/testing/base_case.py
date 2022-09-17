@@ -25,6 +25,7 @@ class TestCaseBase:
     self.desc = desc
     self.points = points
     self.hidden = hidden
+    self.otype = "unknown"
     self.setup_ops: List[Xv6Command] = []
     self.testing_ops: List[Xv6Command] = []
     self.teardown_ops: List[Xv6Command] = []

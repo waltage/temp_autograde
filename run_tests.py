@@ -2,6 +2,8 @@
 import argparse
 import logging
 
+import git.exc
+
 from grader.adapters.anubis import AnubisAdapter
 from grader.adapters.anubis import AnubisAdapterConfig
 from grader.adapters.git import GitAdapter
@@ -55,6 +57,11 @@ def main():
   git_adapter = configure_git(ARGS)
 
   # init git... send status
+  try:
+    git_adapter.clone_student_repo()
+  except git.exc.GitCommandError as ge:
+    # this automatically exits
+    anubis_adapter.panic("could not clone and/or checkout repository", )
 
   # init pipeline, fill and run
   pipeline = configure_pipeline(ARGS)
@@ -62,6 +69,7 @@ def main():
   pipeline.add_test(Case01())
   pipeline.add_test(Case01())
   pipeline.add_test(Case01())
+
 
   results = pipeline.run_tests()
 
