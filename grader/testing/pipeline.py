@@ -33,7 +33,6 @@ class Pipeline:
     self.logger = logging.getLogger("Pipeline")
     self.tests: List[TestCaseBase | None] = []
     self.first_build_alert = False
-    os.chdir(self.pipeline_conf.path)
 
   def add_test(self, test_case: TestCaseBase):
     self.tests.append(test_case)

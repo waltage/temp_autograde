@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import logging
+import os
 
 import git.exc
 
@@ -62,6 +63,8 @@ def main():
   except git.exc.GitCommandError as ge:
     # this automatically exits
     anubis_adapter.panic("could not clone and/or checkout repository", )
+
+  os.chdir(ARGS.path)
 
   # init pipeline, fill and run
   pipeline = configure_pipeline(ARGS)
